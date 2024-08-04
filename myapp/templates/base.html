@@ -1,0 +1,45 @@
+<!-- Para cargar los archivos estaticos -->
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- <link rel="stylesheet" href="{%  static 'styles.css' %}">  Manera de cargar los archivos estaticos -->
+        <script src="https://cdn.tailwindcss.com"></script>  <!--Se puede importar tailwind sin instalar-->
+        <title>Document</title>
+    </head>
+    <body>
+        <nav class="bg-white shadow-lg">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="flex justify-between">
+                    <div class="flex space-x-7">
+                        <div>
+                            <a href="#" class="flex items-center px-2 py-4">
+                                <img class="h-8 w-8" src="{% static 'images/shopping.png'%}" alt="">
+                                <span class="text-gray-500 font-semibold text-lg">MyWebSite</span>    
+                            </a>
+                        </div>
+                        <div class="items-center flex space-x-1">
+                            <a href="#" class="px-2 py-4 text-gray-500 font-semibold border-b-4 border-green-500">Home</a>
+                            <a href="{% url 'myapp:add_product'%}" class="px-2 py-4 text-gray-500 font-semibold">Post Add</a>
+                            <a href="{% url 'myapp:products'%}" class="px-2 py-4 text-gray-500 font-semibold">View Products</a>
+                            {% if user.is_authenticated%}
+                                <form action="{% url 'users:logout' %}" method="POST"> <!--Logout solo acepta post, no get (no c pq)-->
+                                    {% csrf_token %}
+                                    <button class="px-2 py-4 text-gray-500 font-semibold"  type="submit">Logout</button>
+                                    <a class="px-2 py-4 text-gray-500 font-semibold" href="{% url 'users:profile' %}">Profile</a>
+                                </form>
+                                <a class="px-2 py-4 text-gray-500 font-semibold" href="{% url 'myapp:mylistings' %}">My listings</a>
+                            {% else %}
+                                <a class="px-2 py-4 text-gray-500 font-semibold" href="{% url 'users:login' %}">Login</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% block content%}
+
+        {% endblock%}
+    </body>
+</html>
